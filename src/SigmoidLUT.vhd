@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 entity SigmoidLUT is
 	port(
 		x : IN std_logic_vector(19 downto 0);
-		y : OUT std_logic_vector(7 downto 0);
+		y : OUT std_logic_vector(15 downto 0);
 		-- Basic Pins
 		clk : IN std_logic;
 		resetn : IN std_logic
@@ -21,7 +21,7 @@ architecture internal of SigmoidLUT is
 
 	signal int_x : integer range 0 to 524287;
 	
-	signal s_mux_b, s_y, s_mux, string_mux_b : std_logic_vector(7 downto 0);
+	signal s_mux_b, s_y, s_mux, string_mux_b : std_logic_vector(15 downto 0);
 	signal s_x : std_logic_vector(18 downto 0);
 	
 	component N_MUX_2to1 is
@@ -50,15 +50,15 @@ begin
 	-- LUT index and value selected
 	s_x <= x(18 downto 0);
 	int_x <= to_integer(unsigned(s_x));
-	s_y <= std_logic_vector(to_signed(SigmoidLUT(int_x), 8));
+	s_y <= std_logic_vector(to_signed(SigmoidLUT(int_x), 16));
 	
 	-- LUT Optimized MUX input B
-	string_mux_b <= "01000000";
+	string_mux_b <= "0100000000000000";
 	s_mux_b <= std_logic_vector(signed(s_y) - signed(string_mux_b));
 	
 	-- After LUT MUX for Optimization
 	MUX : N_MUX_2to1
-	generic map (Nbit => 8)
+	generic map (Nbit => 16)
 	port map (
 		n_x => s_y,
 		n_y => s_mux_b,
@@ -67,7 +67,7 @@ begin
 	);
 	
 	B_DFF : N_DFF
-	generic map (Nbit => 8)
+	generic map (Nbit => 16)
 	port map (
 		n_d => s_mux,
 		en => '1',

@@ -10,7 +10,7 @@ entity Perceptron is
 	port(
 		x : IN input_array;
 		w : IN weight_array;
-		y : OUT std_logic_vector(7 downto 0);
+		y : OUT std_logic_vector(15 downto 0);
 		-- STD_Vector of enablers
 		n_en : IN std_logic_vector (RegN-1 downto 0);
 		-- Basic Pins

@@ -22,7 +22,7 @@ architecture bhv of TB is
 	signal n_en_tb : std_logic_vector(10 downto 0) := "11111111111";
 	signal x_tb : input_array;
 	signal w_tb : weight_array;
-    signal y_tb : std_logic_vector(7 downto 0);
+    signal y_tb : std_logic_vector(15 downto 0);
     -----------------------------------------------------------------------------------
     -- Component to test (DUT) declaration
     -----------------------------------------------------------------------------------
