@@ -40,8 +40,8 @@ architecture bhv of TB is
 begin
 
 	clk_tb <= (not(clk_tb) and end_sim) after T_CLK / 2;
-	x_tb <= (1 => "00100000", others => "00000001");
-	w_tb <= (1 => "101000000", others => "000011111");
+	x_tb <= (others => "10000000"); --(others => "00000001"); --(1 => "00100000", others => "00000001");
+	w_tb <= (others => "100000000"); --(others => "000000001"); --(1 => "101000000", others => "000011111");
 	resetn_tb <= '0' after T_RESET;
 
 	TB_Perceptron : Perceptron
