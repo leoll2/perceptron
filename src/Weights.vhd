@@ -1,13 +1,9 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.vector_array_pkg.all;
+use work.perceptron_utility_pkg.all;
 
 entity Weights is
-	generic (
-		BitW : positive := 9; -- Number of bits
-		RegN : positive := 11 -- Number of weights
-	);
 	port (
 		-- The Bias weight is the number 0
 		w_in : IN weight_array;

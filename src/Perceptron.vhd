@@ -1,12 +1,9 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.vector_array_pkg.all;
+use work.perceptron_utility_pkg.all;
 
 entity Perceptron is
-	generic (
-		RegN : positive := 11 -- Number of weights
-	);
 	port(
 		x : IN input_array;
 		w : IN weight_array;
@@ -23,7 +20,7 @@ end Perceptron;
 architecture internal of Perceptron is
 
 	signal s_w_out : weight_array;
-	signal s_y_lut : std_logic_vector(19 downto 0);
+	signal s_y_lut : std_logic_vector(BitO-1 downto 0);
 
 	component SigmoidLUT is
 		port(

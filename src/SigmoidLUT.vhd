@@ -1,10 +1,11 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.perceptron_utility_pkg.all;
 
 entity SigmoidLUT is
 	port(
-		x : IN std_logic_vector(19 downto 0);
+		x : IN std_logic_vector(BitO-1 downto 0);
 		y : OUT std_logic_vector(15 downto 0);
 		-- Basic Pins
 		clk : IN std_logic;
@@ -21,7 +22,6 @@ architecture internal of SigmoidLUT is
 	signal int_x : integer range 0 to 4095;
 	
 	signal s_mux_b, s_y, s_mux, mid_val : std_logic_vector(15 downto 0);
-	signal s_x : std_logic_vector(11 downto 0);
 	
 	component N_MUX_2to1 is
 		generic (Nbit : positive);
@@ -47,8 +47,7 @@ architecture internal of SigmoidLUT is
 begin
 		
 	-- LUT index and value selected
-	s_x <= x(18 downto 7);
-	int_x <= to_integer(unsigned(s_x));
+	int_x <= to_integer(unsigned(x));
 	s_y <= std_logic_vector(to_signed(SigmoidLUT(int_x), 16));
 	
 	-- LUT Optimized MUX input B
@@ -61,7 +60,7 @@ begin
 	port map (
 		n_x => s_y,
 		n_y => s_mux_b,
-		c => x(19),
+		c => x(BitO-1),
 		n_z => s_mux
 	);
 	

@@ -1,7 +1,7 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.vector_array_pkg.all;
+use work.perceptron_utility_pkg.all;
 
 entity TB is
 end TB;

@@ -1,14 +1,9 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.vector_array_pkg.all;
+use work.perceptron_utility_pkg.all;
 
 entity Arithmetic is
-	generic (
-		BitX : positive := 8; -- Number of input bits
-		BitW : positive := 9; -- Number of weight bits
-		BitO : positive := 20 -- Number of output bits
-	);
 	port (
 		-- Perceptron Inputs/Outputs (-1,1)
 		x : IN input_array;
@@ -42,7 +37,7 @@ architecture internal of Arithmetic is
 	signal x_lowhigh, ext_x_mid, x_end : std_logic_vector ((BitX + BitW)+2 downto 0); -- 20 Bits
 	
 	-- x_end_trunc the 8 bit truncated version
-	signal x_end_trunc : std_logic_vector (BitO-1 downto 0); -- 8 Bits
+	signal x_end_trunc : std_logic_vector (BitO-1 downto 0); -- 13 Bits
 	
 	component N_DFF is
 		generic (Nbit : positive);
@@ -79,7 +74,7 @@ begin
 	x7x8 <= std_logic_vector(signed(xw7(16) & xw7) + signed(xw8(16) & xw8));
 	x9x10 <= std_logic_vector(signed(xw9(16) & xw9) + signed(xw10(16) & xw10));
 	
-	-- Extending bias befor addition
+	-- Extending bias before addition
 	ext_bias <=  bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias;
 	
 	-- Second 3 adders
@@ -97,12 +92,12 @@ begin
 	x_end <= std_logic_vector(signed(x_lowhigh) + signed(ext_x_mid));
 	
 	-- Truncation to output
-	--x_end_trunc <= x_end(((BitX + BitW)+2) downto (((BitX + BitW)+2) - (BitO-1)));
+	x_end_trunc <= x_end(((BitX + BitW)+2) downto (((BitX + BitW)+2) - (BitO-1)));
 	
 	Y_DFF : N_DFF
 		generic map (Nbit => BitO)
 		port map (
-			n_d => x_end,--_trunc,
+			n_d => x_end_trunc,
 			en => '1',
 			clk => clk,
 			resetn => resetn,
