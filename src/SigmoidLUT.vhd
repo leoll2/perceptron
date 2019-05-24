@@ -23,7 +23,7 @@ architecture internal of SigmoidLUT is
 	signal int_x : integer range 0 to 4095;
 	
 	signal s_int_x, s_int_x_conj, s_mux_x : std_logic_vector(BitO-2 downto 0);
-	signal lut_y, s_mux_a, s_mux_z : std_logic_vector(BitL-1 downto 0);
+	signal lut_y, s_mux_a, s_mux_z : std_logic_vector(BitL downto 0);
 	signal s_mux_z_ext : std_logic_vector(BitY-1 downto 0);
 	
 	component N_MUX_2to1 is
@@ -64,14 +64,14 @@ begin
 		
 	-- LUT index and value selected
 	int_x <= to_integer(unsigned(s_mux_x));
-	lut_y <= std_logic_vector(to_unsigned(SigmoidLUT(int_x), BitL));
+	lut_y <= '0' & std_logic_vector(to_unsigned(SigmoidLUT(int_x), BitL));
 	
 	-- LUT Optimized MUX input A, subtracting lut_y to 1 (Rappresented by 1024)
-	s_mux_a <= std_logic_vector(to_unsigned(1024, BitL) - unsigned(lut_y));
+	s_mux_a <= std_logic_vector(to_unsigned(1023, BitL+1) - unsigned(lut_y));
 	
 	-- After LUT MUX for Optimization
 	MUX_Y : N_MUX_2to1
-	generic map (Nbit => BitL)
+	generic map (Nbit => BitL+1)
 	port map (
 		n_x => s_mux_a,
 		n_y => lut_y,
@@ -79,7 +79,7 @@ begin
 		n_z => s_mux_z
 	);
 	
-	s_mux_z_ext <= "0000000" & s_mux_z;
+	s_mux_z_ext <= "000000" & s_mux_z;
 	
 	DFF_Y : N_DFF
 	generic map (Nbit => BitY)
