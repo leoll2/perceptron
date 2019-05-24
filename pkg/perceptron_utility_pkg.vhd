@@ -1,6 +1,5 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
 
 package perceptron_utility_pkg is
 		-- Support types
@@ -11,4 +10,6 @@ package perceptron_utility_pkg is
 		constant BitX : positive := 8; -- Number of input bits
 		constant BitW : positive := 9; -- Number of weight bits
 		constant BitO : positive := 13; -- Number of arithmetic output bits
+		constant BitL : positive := 9; -- Number of lut value output bits (to be extended)
+		constant BitY : positive := 16; -- Number of perceptron output bits
 end package;
