@@ -3,10 +3,10 @@ use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.perceptron_utility_pkg.all;
 
-entity LUT_TB is
-end LUT_TB;
+entity Arithmetic_TB is
+end Arithmetic_TB;
 
-architecture bhv of LUT_TB is
+architecture bhv of Arithmetic_TB is
 
 	-----------------------------------------------------------------------------------
     -- Testbench constants
@@ -19,45 +19,53 @@ architecture bhv of LUT_TB is
 	signal clk_tb : std_logic := '0';
 	signal resetn_tb : std_logic := '1';
 	signal end_sim : std_logic := '1';
-	signal x_tb : std_logic_vector(BitO-1 downto 0) := (others => '0');
-    signal y_tb : std_logic_vector(BitY-1 downto 0);
+	signal x_tb : input_array := (others => "00000000");
+	signal w_tb : weight_array := (others => "000000000");
+    signal y_tb : std_logic_vector(BitO-1 downto 0);
     -----------------------------------------------------------------------------------
     -- Component to test (DUT) declaration
     -----------------------------------------------------------------------------------
-	component SigmoidLUT is
-		port(
-			x : IN std_logic_vector;
-			y : OUT std_logic_vector;
+	component Arithmetic is
+		port (
+			-- Perceptron Inputs/Outputs (-1,1)
+			x : IN input_array;
+			w : IN weight_array;
+			y : OUT std_logic_vector (BitO-1 downto 0);
+			-- Basic Pins
 			clk : IN std_logic;
 			resetn : IN std_logic
 		);
-	end component SigmoidLUT;
+	end component Arithmetic;
 
 begin
 
 	clk_tb <= (not(clk_tb) and end_sim) after T_CLK / 2;
-	resetn_tb <= '0' after T_CLK + (T_CLK / 4);
+	resetn_tb <= '0' after T_RESET;
 
-	I_SigmoidLUT : SigmoidLUT
-	port map(
-		x => x_tb,
-		y => y_tb,
-		clk => clk_tb,
-		resetn => resetn_tb
-	);
+	TB_Arithmetic : Arithmetic
+		port map(
+			x => x_tb,
+			w => w_tb,
+			y => y_tb,
+			clk => clk_tb,
+			resetn => resetn_tb
+		);
 
 	process(clk_tb)	
 		variable t : integer := 0;		
-	begin
+	begin	
 		if (rising_edge(clk_tb)) then
 			case(t) is
-				when 1 => x_tb <= ((x_tb'left) downto (x_tb'left-2) => '0', others => '1');
-				when 2 => x_tb <= (others => '1');--((x_tb'left) => '1', (x_tb'left-1) => '1', 0 => '1', others => '0');
-				when 5 => end_sim <= '0';
+				when 1 => 
+					x_tb <= (others => "10000000");
+					w_tb <= (others => "100000000");
+				when 10 => 
+					end_sim <= '0';
 				when others => null;			
 			end case;
 			t := t + 1;
 		end if;		
 	end process;
+	
 	
 end bhv;

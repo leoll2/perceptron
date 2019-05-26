@@ -22,7 +22,7 @@ architecture internal of SigmoidLUT is
 	
 	signal int_x : integer range 0 to 4095;
 	
-	signal s_max_y, s_x_xnor, s_mux_x : std_logic_vector(BitO-2 downto 0) := (others => '0');
+	signal s_int_x, s_int_x_conj, s_mux_x : std_logic_vector(BitO-2 downto 0);
 	signal lut_y, s_mux_a, s_mux_z : std_logic_vector(BitL downto 0);
 	signal s_mux_z_ext : std_logic_vector(BitY-1 downto 0);
 	
@@ -47,34 +47,17 @@ architecture internal of SigmoidLUT is
 		);
 	end component N_DFF;
 	
-	component N_ENT_XNOR is
-		generic (Nbit : positive);
-		port(	
-			n_a : IN std_logic_vector;
-			n_b : IN std_logic_vector;
-			n_z : OUT std_logic_vector
-		);
-	end component N_ENT_XNOR;
-	
 begin
 
-	s_max_y <= (others => '1');
-	
-	-- Bitwise XNOR for LUT Optimization
-	I_XNOR : N_ENT_XNOR
-	generic map (Nbit => BitO-1)
-	port map (
-		n_a => x(BitO-2 downto 0),
-		n_b => s_max_y,
-		n_z => s_x_xnor
-	);
+	s_int_x <= x(BitO-2 downto 0);
+	s_int_x_conj <= std_logic_vector(to_unsigned(4095, BitO-1) - unsigned(s_int_x));
 	
 	-- Before LUT MUX for Optimization
 	MUX_X : N_MUX_2to1
 	generic map (Nbit => BitO-1)
 	port map (
-		n_x => s_x_xnor,
-		n_y => x(BitO-2 downto 0),
+		n_x => s_int_x_conj,
+		n_y => s_int_x,
 		c => x(x'left),
 		n_z => s_mux_x
 	);
