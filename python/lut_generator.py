@@ -52,7 +52,7 @@ def generate_lut(n_bit_in):
     fout.write('Elements: ' + str(1 << n_bit_in) + '\n\n')
 
     lut = [lut_in_to_out(i, n_bit_in) for i in range(1 << n_bit_in)]
-    fout.write(','.join(map(str, lut)))
+    fout.write(', '.join(map(str, lut)))
 
 
 def generate_lut_optimized(n_bit_in):
@@ -63,7 +63,7 @@ def generate_lut_optimized(n_bit_in):
     fout.write('Elements: ' + str(1 << n_bit_in-1) + '\n\n')
 
     lut_opt = [lut_in_to_out(i, n_bit_in) for i in range(1 << n_bit_in-1, 1 << n_bit_in)]
-    fout.write(','.join(map(str, lut_opt)))
+    fout.write(', '.join(map(str, lut_opt)))
 
 
 if __name__ == "__main__":

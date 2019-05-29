@@ -51,7 +51,7 @@ begin
 	begin
 		if (rising_edge(clk_tb)) then
 			case(t) is
-				when 0 => x_tb <= "00001" & "00000000";
+				when 0 => x_tb <= "00000" & "00000000";
 				when 2 => end_sim <= '0';
 				when others => null;			
 			end case;
