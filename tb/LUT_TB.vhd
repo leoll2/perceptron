@@ -51,8 +51,17 @@ begin
 	begin
 		if (rising_edge(clk_tb)) then
 			case(t) is
-				when 0 => x_tb <= "00000" & "00000000";
-				when 2 => end_sim <= '0';
+				when 0 => x_tb <= "00000" & "00000000"; -- Parte Intera: 0, Parte Decimale: 0/256
+				when 2 => x_tb <= "11111" & "11111111"; -- Parte Intera: -0, Parte Decimale: 255/256
+				when 4 => x_tb <= "00000" & "00000001"; -- Parte Intera: 0, Parte Decimale: 1/256
+				when 6 => x_tb <= "01111" & "11111111"; -- Parte Intera: 15, Parte Decimale: 255/256
+				when 8 => x_tb <= "01111" & "11111110"; -- Parte Intera: 15, Parte Decimale: 254/256
+				when 10 => x_tb <= "10000" & "00000000"; -- Parte Intera: -16, Parte Decimale: 0/256
+				when 12 => x_tb <= "10000" & "00000001"; -- Parte Intera: -15, Parte Decimale: 255/256
+				when 14 => x_tb <= "00001" & "10101010"; -- Parte Intera: 1, Parte Decimale: 170/256
+				when 16 => x_tb <= "11110" & "10101010"; -- Parte Intera: -2, Parte Decimale: 86/256
+				when 18 => x_tb <= "00010" & "11001100"; -- Parte Intera: 2, Parte Decimale: 204/256
+				when 20 => end_sim <= '0';
 				when others => null;			
 			end case;
 			t := t + 1;

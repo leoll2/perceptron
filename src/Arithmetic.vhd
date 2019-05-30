@@ -91,8 +91,8 @@ begin
 	-- Last adder
 	x_end <= std_logic_vector(signed(x_lowhigh) + signed(ext_x_mid));
 	
-	-- Truncation to output
-	x_end_trunc <= x_end(((BitX + BitW)+2) downto (((BitX + BitW)+2) - (BitO-1)));
+	-- Truncation to output 
+	x_end_trunc <= x_end(19 downto 7);
 	
 	Y_DFF : N_DFF
 		generic map (Nbit => BitO)
