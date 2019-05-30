@@ -88,10 +88,10 @@ begin
 	-- Extending x_mid to 20 bits
 	ext_x_mid <= x_mid(18) & x_mid;
 	
-	-- Last adder
+	-- Last adder, still on 20 bit (read documentation for mathematical explanation
 	x_end <= std_logic_vector(signed(x_lowhigh) + signed(ext_x_mid));
 	
-	-- Truncation to output 
+	-- Truncation to output, throwing away the 7 LSBs
 	x_end_trunc <= x_end(19 downto 7);
 	
 	Y_DFF : N_DFF
