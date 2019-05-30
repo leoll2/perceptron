@@ -75,7 +75,7 @@ begin
 	x9x10 <= std_logic_vector(signed(xw9(16) & xw9) + signed(xw10(16) & xw10));
 	
 	-- Extending bias before addition
-	ext_bias <=  bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias(8) & bias;
+	ext_bias <=  (18 downto 9 => bias(8)) & bias;
 	
 	-- Second 3 adders
 	x_low <= std_logic_vector(signed(x1x2(17) & x1x2) + signed(x3x4(17) & x3x4));
