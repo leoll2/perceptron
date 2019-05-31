@@ -51,16 +51,16 @@ begin
 	begin
 		if (rising_edge(clk_tb)) then
 			case(t) is
-				when 0 => x_tb <= "00000" & "00000000"; 	-- Fractional Value:  0/256 		| Actual Value: 0				| Expected Result: 
-				when 2 => x_tb <= "11111" & "11111111"; 	-- Fractional Value:  -1/256 		| Actual Value: -0,00390625		| Expected Result: 
-				when 4 => x_tb <= "00000" & "00000001"; 	-- Fractional Value:  1/256 		| Actual Value: 0,00390625		| Expected Result: 
-				when 6 => x_tb <= "01111" & "11111111"; 	-- Fractional Value:  4095/256 		| Actual Value: 15,99609375		| Expected Result: 
-				when 8 => x_tb <= "01111" & "11111110"; 	-- Fractional Value:  4094/256 		| Actual Value: 15,9921875		| Expected Result: 
-				when 10 => x_tb <= "10000" & "00000000"; 	-- Fractional Value:  -4096/256 	| Actual Value: -16				| Expected Result: 
-				when 12 => x_tb <= "10000" & "00000001"; 	-- Fractional Value:  -4095/256 	| Actual Value: -15,99609375	| Expected Result: 
-				when 14 => x_tb <= "00001" & "10101010"; 	-- Fractional Value:  426/256 		| Actual Value: 1,6640625		| Expected Result: 
-				when 16 => x_tb <= "11110" & "10101010"; 	-- Fractional Value:  -342/256 		| Actual Value: -1,3359375		| Expected Result: 
-				when 18 => x_tb <= "00010" & "11001100"; 	-- Fractional Value:  716/256 		| Actual Value: 2,796875		| Expected Result: 
+				when 0 => x_tb <= "00000" & "000000000"; 	-- Fractional Value:  0/512 		| Actual Value: 0				| Expected Result: 
+				when 2 => x_tb <= "11111" & "111111111"; 	-- Fractional Value:  -1/512 		| Actual Value: -0,001953125	| Expected Result: 
+				when 4 => x_tb <= "00000" & "000000001"; 	-- Fractional Value:  1/512 		| Actual Value: 0,001953125		| Expected Result: 
+				when 6 => x_tb <= "01111" & "111111111"; 	-- Fractional Value:  8191/512 		| Actual Value: 15,998046875	| Expected Result: 
+				when 8 => x_tb <= "01111" & "111111110"; 	-- Fractional Value:  8190/512 		| Actual Value: 15,998046875	| Expected Result: 
+				when 10 => x_tb <= "10000" & "000000000"; 	-- Fractional Value:  -8192/512 	| Actual Value: -16				| Expected Result: 
+				when 12 => x_tb <= "10000" & "000000001"; 	-- Fractional Value:  -8191/512 	| Actual Value: -15,998046875	| Expected Result: 
+				when 14 => x_tb <= "00001" & "101010101"; 	-- Fractional Value:  853/512 		| Actual Value: 1,666015625		| Expected Result: 
+				when 16 => x_tb <= "11110" & "101010101"; 	-- Fractional Value:  -683/512 		| Actual Value: -1,333984375	| Expected Result: 
+				when 18 => x_tb <= "00010" & "110011001"; 	-- Fractional Value:  1433/512 		| Actual Value: -1,333984375	| Expected Result: 
 				when 20 => end_sim <= '0';
 				when others => null;			
 			end case;

@@ -22,9 +22,10 @@ architecture internal of SigmoidLUT is
 	
 	signal int_x : integer range 0 to 4095;
 	
-	signal s_int_x, s_int_x_conj, s_mux_x: std_logic_vector(BitO-2 downto 0);
+    signal s_int_x, s_sat_x_conj, s_mux_x, s_sat_x: std_logic_vector(BitO-3 downto 0);
 	signal lut_y, s_mux_a, s_mux_z : std_logic_vector(BitL downto 0);
 	signal s_mux_z_ext : std_logic_vector(BitY-1 downto 0);
+    signal sat_c : std_logic;
 	
 	component N_MUX_2to1 is
 		generic (Nbit : positive);
@@ -49,15 +50,27 @@ architecture internal of SigmoidLUT is
 	
 begin
 
-	s_int_x <= x(BitO-2 downto 0);
-	s_int_x_conj <= not(s_int_x);
+	s_int_x <= x(BitO-3 downto 0);
+    sat_c <= x(x'left) xor x(x'left - 1); -- Control bit for first MUX
+    
+    -- Before LUT MUX for Saturation
+	MUX_SAT : N_MUX_2to1
+	generic map (Nbit => BitO-2)
+	port map (
+		n_x => s_int_x,
+		n_y => x"3FF", -- 1023 in exadecimal
+		c => sat_c,
+		n_z => s_sat_x
+	);
+    
+	s_sat_x_conj <= not(s_sat_x);
 	
 	-- Before LUT MUX for Optimization
 	MUX_X : N_MUX_2to1
-	generic map (Nbit => BitO-1)
+	generic map (Nbit => BitO-2)
 	port map (
-		n_x => s_int_x,
-		n_y => s_int_x_conj,
+		n_x => s_sat_x,
+		n_y => s_sat_x_conj,
 		c => x(x'left),
 		n_z => s_mux_x
 	);
@@ -67,7 +80,7 @@ begin
 	lut_y <= '1' & std_logic_vector(to_unsigned(SigmoidLUT(int_x), BitL));
 	
 	-- LUT Optimized MUX input A, subtracting lut_y to 1 (Rappresented by 1024)
-	s_mux_a <= std_logic_vector(to_unsigned(1023, BitL+1) - unsigned(lut_y));
+	s_mux_a <= std_logic_vector(to_unsigned(2047, BitL+1) - unsigned(lut_y));
 	
 	-- After LUT MUX for Optimization
 	MUX_Y : N_MUX_2to1
@@ -79,7 +92,7 @@ begin
 		n_z => s_mux_z
 	);
 	
-	s_mux_z_ext <= "000000" & s_mux_z;
+	s_mux_z_ext <= (15 downto 11 => '0') & s_mux_z;
 	
 	DFF_Y : N_DFF
 	generic map (Nbit => BitY)

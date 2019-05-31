@@ -91,8 +91,8 @@ begin
 	-- Last adder, still on 20 bit (read documentation for mathematical explanation
 	x_end <= std_logic_vector(signed(x_lowhigh) + signed(ext_x_mid));
 	
-	-- Truncation to output, throwing away the 7 LSBs
-	x_end_trunc <= x_end(19 downto 7);
+	-- Truncation to output, throwing away the 6 LSBs
+	x_end_trunc <= x_end(19 downto 6);
 	
 	Y_DFF : N_DFF
 		generic map (Nbit => BitO)
