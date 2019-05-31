@@ -57,7 +57,7 @@ begin
 	begin	
 		if (rising_edge(clk_tb)) then
 			case(t) is
-				-- To get represented values divide Value by 2^8 (in case of x_tb) or by 2^9 (in case of w_tb)
+				-- To get represented values divide 'Value' by 2^7 (in case of x_tb) or by 2^8 (in case of w_tb)
 				when 0 => 
 					x_tb <= (others => "00000000"); -- Value: 0
 					w_tb <= (others => "000000000"); -- Value: 0
