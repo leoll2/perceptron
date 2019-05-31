@@ -60,7 +60,7 @@ begin
 				when 12 => x_tb <= "10000" & "000000001"; 	-- Fractional Value:  -8191/512 	| Actual Value: -15,998046875	| Expected Result: 
 				when 14 => x_tb <= "00001" & "101010101"; 	-- Fractional Value:  853/512 		| Actual Value: 1,666015625		| Expected Result: 
 				when 16 => x_tb <= "11110" & "101010101"; 	-- Fractional Value:  -683/512 		| Actual Value: -1,333984375	| Expected Result: 
-				when 18 => x_tb <= "00010" & "110011001"; 	-- Fractional Value:  1433/512 		| Actual Value: -1,333984375	| Expected Result: 
+				when 18 => x_tb <= "00010" & "110011001"; 	-- Fractional Value:  1433/512 		| Actual Value: 2,798828125     | Expected Result: 
 				when 20 => end_sim <= '0';
 				when others => null;			
 			end case;

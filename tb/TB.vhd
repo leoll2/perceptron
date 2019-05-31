@@ -19,7 +19,7 @@ architecture bhv of TB is
 	signal clk_tb : std_logic := '0';
 	signal resetn_tb : std_logic := '1';
 	signal end_sim : std_logic := '1';
-	signal n_en_tb : std_logic_vector(10 downto 0) := "11111111111";
+	signal en_tb : std_logic := '0';
 	signal x_tb : input_array := (others => "00000000");
 	signal w_tb : weight_array := (others => "000000000");
     signal y_tb : std_logic_vector(BitY-1 downto 0);
@@ -31,7 +31,7 @@ architecture bhv of TB is
 			x : IN input_array;
 			w : IN weight_array;
 			y : OUT std_logic_vector;
-			n_en : IN std_logic_vector;
+			en : IN std_logic;
 			clk : IN std_logic;
 			resetn : IN std_logic
 		);
@@ -40,14 +40,14 @@ architecture bhv of TB is
 begin
 
 	clk_tb <= (not(clk_tb) and end_sim) after T_CLK / 2;
-	resetn_tb <= '0' after T_RESET;
+	resetn_tb <= '0' after T_CLK + (T_CLK / 4);
 
 	TB_Perceptron : Perceptron
 		port map(
 			x => x_tb,
 			w => w_tb,
 			y => y_tb,
-			n_en => n_en_tb,
+            en => en_tb,
 			clk => clk_tb,
 			resetn => resetn_tb
 		);
@@ -57,14 +57,65 @@ begin
 	begin	
 		if (rising_edge(clk_tb)) then
 			case(t) is
-				when 1 => 
-					x_tb <= (1 => "00000000", others => "10000000");
-					w_tb <= (1 => "000000000", others => "100000000");
-				when 2 =>
-					n_en_tb <= (others => '0');
-				when 10 => 
-					end_sim <= '0';
-				when others => null;			
+				-- To get represented values divide Value by 2^8 (in case of x_tb) or by 2^9 (in case of w_tb)
+				when 0 => 
+					x_tb <= (others => "00000000"); -- Value: 0
+					w_tb <= (others => "000000000"); -- Value: 0
+                    en_tb <= '1';
+                when 1 =>
+                    en_tb <= '0';
+                when 5 => 
+					x_tb <= (others => "00000001"); -- Value: 1
+					w_tb <= (others => "000000001"); -- Value: 1
+                    en_tb <= '1';
+                when 6 =>
+                    en_tb <= '0';
+                when 10 => 
+					x_tb <= (others => "11111111"); -- Value: -1
+					w_tb <= (others => "111111111"); -- Value: -1
+                    en_tb <= '1';
+                when 11 =>
+                    en_tb <= '0';
+                when 15 => 
+					x_tb <= (others => "01111111"); -- Value: 127
+					w_tb <= (others => "011111111"); -- Value: 255
+                    en_tb <= '1';
+                when 16 =>
+                    en_tb <= '0';
+                when 20 => 
+					x_tb <= (others => "10000000"); -- Value: -128
+					w_tb <= (others => "100000000"); -- Value: -256
+                    en_tb <= '1';
+                when 21 =>
+                    en_tb <= '0';
+                when 25 => 
+					x_tb <= (others => "10000000"); -- Value: -128
+					w_tb <= (others => "011111111"); -- Value: 255
+                    en_tb <= '1';
+                when 26 =>
+                    en_tb <= '0';
+                when 30 => 
+					x_tb <= (others => "01111111"); -- Value: 127
+					w_tb <= (others => "100000000"); -- Value: -256
+                    en_tb <= '1';
+                when 31 =>
+                    en_tb <= '0';
+                when 35 => 
+					x_tb <= (1 => "00010101", others => "00000000"); -- Value: 1 => 23
+					w_tb <= (1 => "000000011", others => "000000000"); -- Value: 1 => 3
+                    en_tb <= '1';
+                when 36 =>
+                    en_tb <= '0';
+                when 40 => 
+					x_tb <= (1 => "00010101", others => "00000000"); -- Value: 1 => 23
+					w_tb <= (0 => "000000001", 1 => "000000011", others => "000000000"); -- Value: 0 => 1, 1 => 3
+                    en_tb <= '1';
+                when 41 =>
+                    en_tb <= '0';
+				when 45 => 
+					end_sim <= '0';		
+                when others =>
+                    null;		
 			end case;
 			t := t + 1;
 		end if;		

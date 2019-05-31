@@ -37,7 +37,7 @@ architecture internal of Arithmetic is
 	signal x_lowhigh, ext_x_mid, x_end : std_logic_vector ((BitX + BitW)+2 downto 0); -- 20 Bits
 	
 	-- x_end_trunc the 8 bit truncated version
-	signal x_end_trunc : std_logic_vector (BitO-1 downto 0); -- 13 Bits
+	signal x_end_trunc : std_logic_vector (BitO-1 downto 0); -- 14 Bits
 	
 	component N_DFF is
 		generic (Nbit : positive);

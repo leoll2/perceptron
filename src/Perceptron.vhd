@@ -8,9 +8,8 @@ entity Perceptron is
 		x : IN input_array;
 		w : IN weight_array;
 		y : OUT std_logic_vector(BitY-1 downto 0);
-		-- STD_Vector of enablers
-		n_en : IN std_logic_vector (RegN-1 downto 0);
 		-- Basic Pins
+		en : IN std_logic;
 		clk : IN std_logic;
 		resetn : IN std_logic
 	);
@@ -20,6 +19,7 @@ end Perceptron;
 architecture internal of Perceptron is
 
 	signal s_w_out : weight_array;
+    signal s_x_out : input_array;
 	signal s_arith : std_logic_vector(BitO-1 downto 0);
 
 	component SigmoidLUT is
@@ -45,26 +45,45 @@ architecture internal of Perceptron is
 		port (
 			w_in : IN weight_array;
 			w_out : OUT weight_array;
-			n_en : IN std_logic_vector;
+			en : IN std_logic;
 			clk : IN std_logic;
 			resetn : IN std_logic
 		);
 	end component Weights;
+    
+    component Inputs is
+		port (
+			x_in : IN input_array;
+			x_out : OUT input_array;
+			en : IN std_logic;
+			clk : IN std_logic;
+			resetn : IN std_logic
+		);
+	end component Inputs;
 
 begin
+
+    I_Input : Inputs
+	port map(
+		x_in => x,
+		x_out => s_x_out,
+		en => en,
+		clk => clk,
+		resetn => resetn
+	);
 
 	I_Weights : Weights
 	port map(
 		w_in => w,
 		w_out => s_w_out,
-		n_en => n_en,
+		en => en,
 		clk => clk,
 		resetn => resetn
 	);
 	
 	I_Arithmetic : Arithmetic
 	port map(
-		x => x,
+		x => s_x_out,
 		w => s_w_out,
 		y => s_arith,
 		clk => clk,

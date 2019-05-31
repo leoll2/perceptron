@@ -40,7 +40,7 @@ architecture bhv of Arithmetic_TB is
 begin
 
 	clk_tb <= (not(clk_tb) and end_sim) after T_CLK / 2;
-	resetn_tb <= '0' after T_RESET;
+	resetn_tb <= '0' after T_CLK + (T_CLK / 4);
 
 	TB_Arithmetic : Arithmetic
 		port map(
@@ -56,10 +56,35 @@ begin
 	begin	
 		if (rising_edge(clk_tb)) then
 			case(t) is
-				when 1 => 
-					x_tb <= (others => "10000000");
-					w_tb <= (others => "100000000");
-				when 10 => 
+                -- To get represented values divide Value by 2^8 (in case of x_tb) or by 2^9 (in case of w_tb)
+				when 0 => 
+					x_tb <= (others => "00000000"); -- Value: 0
+					w_tb <= (others => "000000000"); -- Value: 0
+                when 1 => 
+					x_tb <= (others => "00000001"); -- Value: 1
+					w_tb <= (others => "000000001"); -- Value: 1
+                when 2 => 
+					x_tb <= (others => "11111111"); -- Value: -1
+					w_tb <= (others => "111111111"); -- Value: -1
+                when 3 => 
+					x_tb <= (others => "01111111"); -- Value: 127
+					w_tb <= (others => "011111111"); -- Value: 255
+                when 4 => 
+					x_tb <= (others => "10000000"); -- Value: -128
+					w_tb <= (others => "100000000"); -- Value: -256
+                when 5 => 
+					x_tb <= (others => "10000000"); -- Value: -128
+					w_tb <= (others => "011111111"); -- Value: 255
+                when 6 => 
+					x_tb <= (others => "01111111"); -- Value: 127
+					w_tb <= (others => "100000000"); -- Value: -256
+                when 7 => 
+					x_tb <= (1 => "00010101", others => "00000000"); -- Value: 1 => 23
+					w_tb <= (1 => "000000011", others => "000000000"); -- Value: 1 => 3
+                when 8 => 
+					x_tb <= (1 => "00010101", others => "00000000"); -- Value: 1 => 23
+					w_tb <= (0 => "000000001", 1 => "000000011", others => "000000000"); -- Value: 0 => 1, 1 => 3
+				when 9 => 
 					end_sim <= '0';
 				when others => null;			
 			end case;
