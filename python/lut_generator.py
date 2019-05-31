@@ -4,12 +4,12 @@ from __future__ import division
 import math
 
 # Input size
-N_BIT_IN_INT = 5    # [bit] integer part of the input
-N_BIT_IN_DEC = 8    # [bit] decimal part of the input
+N_BIT_IN_INT = 4    # [bit] integer part of the input
+N_BIT_IN_DEC = 9    # [bit] decimal part of the input
 N_BIT_IN = N_BIT_IN_INT + N_BIT_IN_DEC
 
 # Output size
-N_BIT_OUT = 10      # [bit]
+N_BIT_OUT = 11      # [bit]
 
 # File
 LUT_FILE_NAME = 'lut.txt'
