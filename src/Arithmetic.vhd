@@ -24,13 +24,13 @@ architecture internal of Arithmetic is
 	signal xw1, xw2, xw3, xw4, xw5, xw6, xw7, xw8, xw9, xw10 : std_logic_vector ((BitX + BitW)-1 downto 0); -- 17 Bits
 	
 	-- xAxB is the signal for thew result of A + B
-	signal x1x2, x3x4, x5x6, x7x8, x9x10  : std_logic_vector ((BitX + BitW) downto 0); -- 18 Bits
+	-- mul_ext_bias is the multiplcation of bias for 1,0000000 and extended by 2 bits
+	signal x1x2, x3x4, x5x6, x7x8, x9x10, mul_ext_bias : std_logic_vector ((BitX + BitW) downto 0); -- 18 Bits
 	
 	-- x_low is the sum of 1, 2, 3 and 4
 	-- x_mid is the sum of 5, 6 and bias
 	-- x_high is the sum of 7, 8, 9, 10
-	-- ext_bias is the bit extension of bias
-	signal x_low, x_mid, x_high, ext_bias : std_logic_vector ((BitX + BitW)+1 downto 0); -- 19 Bits
+	signal x_low, x_mid, x_high : std_logic_vector ((BitX + BitW)+1 downto 0); -- 19 Bits
 		
 	-- ext_x_mid is the extension of x_mid
 	-- x_end is the sum of x_lowhigh and ext_x_mid
@@ -74,13 +74,13 @@ begin
 	x7x8 <= std_logic_vector(signed(xw7(16) & xw7) + signed(xw8(16) & xw8));
 	x9x10 <= std_logic_vector(signed(xw9(16) & xw9) + signed(xw10(16) & xw10));
 	
-	-- Extending bias before addition
-	ext_bias <=  (18 downto 9 => bias(8)) & bias;
+	-- Multiplicating bias for 1,0000000
+	mul_ext_bias <= (17 downto 16 => bias(8)) & bias & (6 downto 0 => '0');
 	
 	-- Second 3 adders
 	x_low <= std_logic_vector(signed(x1x2(17) & x1x2) + signed(x3x4(17) & x3x4));
 	x_high <= std_logic_vector(signed(x7x8(17) & x7x8) + signed(x9x10(17) & x9x10));
-	x_mid <= std_logic_vector(signed(x5x6(17) & x5x6) + signed(ext_bias));
+	x_mid <= std_logic_vector(signed(x5x6(17) & x5x6) + signed(mul_ext_bias(17) & mul_ext_bias));
 	
 	-- Second-last adder
 	x_lowhigh <= std_logic_vector(signed(x_low(18) & x_low) + signed(x_high(18) & x_high));
