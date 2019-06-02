@@ -74,10 +74,10 @@ begin
 					w_tb <= (0 => "011111111", others => "100000000"); -- Value: -256, Bias: 255
 				when 5 => 
 					x_tb <= (others => "10000000"); -- Value: -128
-					w_tb <= (others => "011111111"); -- Value: 255
+					w_tb <= (0 => "100000000", others => "011111111"); -- Value: 255
 				when 6 => 
 					x_tb <= (others => "01111111"); -- Value: 127
-					w_tb <= (0 => "011111111", others => "100000000"); -- Value: -256, Bias: 255
+					w_tb <= (others => "100000000"); -- Value: -256
 				when 7 => 
 					x_tb <= (1 => "00010101", others => "00000000"); -- Value: 1 => 23
 					w_tb <= (1 => "000000011", others => "000000000"); -- Value: 1 => 3
