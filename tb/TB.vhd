@@ -58,67 +58,37 @@ begin
 		if (rising_edge(clk_tb)) then
 			case(t) is
 				-- To get represented values divide 'Value' by 2^7 (in case of x_tb) or by 2^8 (in case of w_tb)
-				when 0 => 
-					x_tb <= (others => "00000000"); -- Value: 0
-					w_tb <= (others => "000000000"); -- Value: 0
+				when 0 =>
+					x_tb <= (others => "10000000"); -- Value: -128
+					w_tb <= (0 => "100000000", others => "011111111"); -- Value: 255, Bias: -256
                     en_tb <= '1';
                 when 1 =>
                     en_tb <= '0';
                 when 5 => 
-					x_tb <= (others => "00000001"); -- Value: 1
-					w_tb <= (0 => "000000000", others => "000000001"); -- Value: 1
+					x_tb <= (1 => x"9C", 2 => x"B2", 3 => x"AE", others => x"00");
+					w_tb <= (1 => "010000000", 2 => "010000000", 3 => "010000000", others => "000000000"); -- Value: 127
                     en_tb <= '1';
                 when 6 =>
                     en_tb <= '0';
                 when 10 => 
-					x_tb <= (others => "11111111"); -- Value: -1
-					w_tb <= (0 => "000000000", others => "111111111"); -- Value: -1
+					x_tb <= (others => "00000000"); -- Value: 0
+					w_tb <= (others => "000000000"); -- Value: 0
                     en_tb <= '1';
                 when 11 =>
                     en_tb <= '0';
                 when 15 => 
-					x_tb <= (others => "01111111"); -- Value: 127
-					w_tb <= (others => "011111111"); -- Value: 255
+					x_tb <= (1 => x"1C", 2 => x"22", 3 => x"0E", others => x"00");
+					w_tb <= (1 => "010000000", 2 => "010000000", 3 => "010000000", others => "000000000"); -- Value: 127
                     en_tb <= '1';
                 when 16 =>
                     en_tb <= '0';
-                when 20 => 
+                when 20 =>
 					x_tb <= (others => "10000000"); -- Value: -128
 					w_tb <= (0 => "011111111", others => "100000000"); -- Value: -256, Bias: 255
                     en_tb <= '1';
                 when 21 =>
                     en_tb <= '0';
                 when 25 => 
-					x_tb <= (others => "10000000"); -- Value: -128
-					w_tb <= (0 => "100000000", others => "011111111"); -- Value: 255
-                    en_tb <= '1';
-                when 26 =>
-                    en_tb <= '0';
-                when 30 => 
-					x_tb <= (others => "01111111"); -- Value: 127
-					w_tb <= (others => "100000000"); -- Value: -256
-                    en_tb <= '1';
-                when 31 =>
-                    en_tb <= '0';
-                when 35 => 
-					x_tb <= (1 => "00010101", others => "00000000"); -- Value: 1 => 23
-					w_tb <= (1 => "000000011", others => "000000000"); -- Value: 1 => 3
-                    en_tb <= '1';
-                when 36 =>
-                    en_tb <= '0';
-                when 40 => 
-					x_tb <= (1 => "00010101", 2 => "00000001", others => "00000000"); -- Value: 1 => 23, 2 => 1
-					w_tb <= (1 => "000000011", 2 => "000000001", others => "000000000"); -- Value: 1 => 3, 2 => 1
-                    en_tb <= '1';
-                when 41 =>
-                    en_tb <= '0';
-				when 45 => 
-					x_tb <= (1 => "01000000", 2 => "01000000", 3 => "01000000", others => "00000000"); -- Value: 1, 2, 3 => 64
-					w_tb <= (1 => "010000000", 2 => "010000000", 3 => "010000000", others => "000000000"); -- Value: 1, 2, 3 => 128
-                    en_tb <= '1';
-                when 46 =>
-                    en_tb <= '0';
-				when 50 => 
 					end_sim <= '0';		
                 when others =>
                     null;		
