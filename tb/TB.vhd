@@ -60,13 +60,13 @@ begin
 				-- To get represented values divide 'Value' by 2^7 (in case of x_tb) or by 2^8 (in case of w_tb)
 				when 0 =>
 					x_tb <= (others => "10000000"); -- Value: -128
-					w_tb <= (0 => "100000000", others => "011111111"); -- Value: 255, Bias: -256
+					w_tb <= (others => "011111111"); -- Value: 255
                     en_tb <= '1';
                 when 1 =>
                     en_tb <= '0';
                 when 5 => 
-					x_tb <= (others => "01000000"); -- Value: 64
-					w_tb <= (others => "110000000"); -- Value: -128
+					x_tb <= (others => "11000000"); -- Value: -64
+					w_tb <= (0 => "000000000", others => "010000000"); -- Value: 128
                     en_tb <= '1';
                 when 6 =>
                     en_tb <= '0';
@@ -78,7 +78,7 @@ begin
                     en_tb <= '0';
                 when 15 => 
 					x_tb <= (others => "01000000"); -- Value: 64
-					w_tb <= (others => "010000000"); -- Value: 128
+					w_tb <= (0 => "000000000", others => "010000000"); -- Value: 128
                     en_tb <= '1';
                 when 16 =>
                     en_tb <= '0';
