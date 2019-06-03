@@ -65,8 +65,8 @@ begin
                 when 1 =>
                     en_tb <= '0';
                 when 5 => 
-					x_tb <= (1 => x"9C", 2 => x"B2", 3 => x"AE", others => x"00");
-					w_tb <= (1 => "010000000", 2 => "010000000", 3 => "010000000", others => "000000000"); -- Value: 127
+					x_tb <= (others => "01000000"); -- Value: 64
+					w_tb <= (others => "110000000"); -- Value: -128
                     en_tb <= '1';
                 when 6 =>
                     en_tb <= '0';
@@ -77,8 +77,8 @@ begin
                 when 11 =>
                     en_tb <= '0';
                 when 15 => 
-					x_tb <= (1 => x"1C", 2 => x"22", 3 => x"0E", others => x"00");
-					w_tb <= (1 => "010000000", 2 => "010000000", 3 => "010000000", others => "000000000"); -- Value: 127
+					x_tb <= (others => "01000000"); -- Value: 64
+					w_tb <= (others => "010000000"); -- Value: 128
                     en_tb <= '1';
                 when 16 =>
                     en_tb <= '0';
